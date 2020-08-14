@@ -1,17 +1,25 @@
-from HelperFunctions.mysqlConnector import get_conn
+from HelperFunctions.mysqlConnector import get_conn, run_query_noop, run_query_op
 from HelperFunctions.helperFunctions import get_file_format
-from ImageRepresentation.queries import insert_image_path_query, get_image_id_query
+from ImageRepresentation.queries import insert_image_path_query, get_image_id_query, has_feature_extracted_query
 import pandas as pd  # move this later to Connector Class
 import os
 from mysql.connector.errors import IntegrityError
+import cv2
 
 
 class Image(object):
-    def __init__(self, path):
+    def __init__(self, path, mysql_connector):
         self.path = path
         self.image_format = get_file_format(path)
-        self.mysql_connector = get_conn(os.getenv("MYSQL_USER"), os.getenv("MYSQL_PWD"))
+        self.mysql_connector = mysql_connector
         self.image_id = self.get_image_id()
+        self.image = cv2.imread(self.path)
+        self.has_color_descriptor = self.has_color_descriptor_feature_extracted()
+
+    def has_color_descriptor_feature_extracted(self):
+        count = run_query_op(self.mysql_connector,
+                             has_feature_extracted_query(self.image_id, "image_search.color_descriptor_features"))['cnt'].iloc[0]
+        return True if count > 0 else False
 
     def get_image_id(self):
         """
@@ -21,11 +29,10 @@ class Image(object):
             then it's assumed to be because image_path exists
         """
         try:
-            self.mysql_connector.cursor().execute(insert_image_path_query(self.path, self.image_format))
-            self.mysql_connector.commit()
+            run_query_noop(self.mysql_connector, insert_image_path_query(self.path, self.image_format))
         except IntegrityError:
             pass
-        image_id = pd.read_sql(get_image_id_query(self.path), self.mysql_connector)['image_id'].iloc[0]
+        image_id = run_query_op(self.mysql_connector, get_image_id_query(self.path))['image_id'].iloc[0]
         return image_id
 
     def __str__(self):

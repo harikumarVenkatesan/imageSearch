@@ -13,6 +13,14 @@ def get_image_id_query(image_path):
 	return query
 
 
+def has_feature_extracted_query(image_id, table_name):
+	query = """
+			select count(*) cnt from {}
+			where image_id = {}
+	""".format(table_name, image_id)
+	return query
+
+
 def create_image_table():
 	query = """
 			create table image_search.image(
