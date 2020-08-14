@@ -1,4 +1,5 @@
 from HelperFunctions.mysqlConnector import get_conn
+from HelperFunctions.helperFunctions import get_file_format
 from ImageRepresentation.queries import insert_image_path_query, get_image_id_query
 import pandas as pd  # move this later to Connector Class
 import os
@@ -8,6 +9,7 @@ from mysql.connector.errors import IntegrityError
 class Image(object):
     def __init__(self, path):
         self.path = path
+        self.image_format = get_file_format(path)
         self.mysql_connector = get_conn(os.getenv("MYSQL_USER"), os.getenv("MYSQL_PWD"))
         self.image_id = self.get_image_id()
 
@@ -19,7 +21,7 @@ class Image(object):
             then it's assumed to be because image_path exists
         """
         try:
-            self.mysql_connector.cursor().execute(insert_image_path_query(self.path))
+            self.mysql_connector.cursor().execute(insert_image_path_query(self.path, self.image_format))
             self.mysql_connector.commit()
         except IntegrityError:
             pass
@@ -28,4 +30,3 @@ class Image(object):
 
     def __str__(self):
         return self.path + "__" + str(self.image_id)
-
