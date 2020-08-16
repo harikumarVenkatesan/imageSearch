@@ -2,7 +2,7 @@
 import numpy as np
 from HelperFunctions.MysqlConnector import run_query_noop, run_query_op
 from Searcher.SqlQueries import get_features
-from distanceMeasures.DistanceMeasures import DistanceMeasures
+from DistanceMeasures.DistanceMeasures import DistanceMeasures
 from ImageRepresentation.SimilarImage import SimilarImage
 
 

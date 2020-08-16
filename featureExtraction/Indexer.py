@@ -1,6 +1,6 @@
-from featureExtraction.colorSimilarity.colorDescriptor import ColorDescriptor
+from FeatureExtraction.ColorSimilarity.colorDescriptor import ColorDescriptor
 from ImageRepresentation.Image import Image
-from featureExtraction.SqlQueries import insert_color_descriptor
+from FeatureExtraction.SqlQueries import insert_color_descriptor
 from HelperFunctions.MysqlConnector import get_conn, run_query_noop, run_query_op
 import os
 
