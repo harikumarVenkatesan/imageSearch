@@ -1,9 +1,9 @@
 # import the necessary packages
 import numpy as np
-from HelperFunctions.mysqlConnector import run_query_noop, run_query_op
-from Searcher.searcher_sql_queries import get_features
+from HelperFunctions.MysqlConnector import run_query_noop, run_query_op
+from Searcher.SqlQueries import get_features
 from distanceMeasures.DistanceMeasures import DistanceMeasures
-from ImageRepresentation.similarImage import SimilarImage
+from ImageRepresentation.SimilarImage import SimilarImage
 
 
 class Searcher:

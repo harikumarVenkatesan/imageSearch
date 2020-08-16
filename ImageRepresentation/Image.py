@@ -1,6 +1,6 @@
-from HelperFunctions.mysqlConnector import run_query_noop, run_query_op
-from HelperFunctions.helperFunctions import get_file_format
-from ImageRepresentation.queries import insert_image_path_query, get_image_id_query, \
+from HelperFunctions.MysqlConnector import run_query_noop, run_query_op
+from HelperFunctions.HelperFunctions import get_file_format
+from ImageRepresentation.SqlQueries import insert_image_path_query, get_image_id_query, \
     has_feature_extracted_query, get_path_query
 from mysql.connector.errors import IntegrityError
 import cv2

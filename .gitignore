@@ -4,3 +4,4 @@ venv/
 *.iml
 *.pyc
 *.png
+.DS_Store

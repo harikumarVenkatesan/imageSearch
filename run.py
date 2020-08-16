@@ -1,6 +1,6 @@
 from ImageRepresentation.Image import Image
-from featureExtraction.indexer import Indexer
-from HelperFunctions.mysqlConnector import get_conn
+from featureExtraction.Indexer import Indexer
+from HelperFunctions.MysqlConnector import get_conn
 import os
 from Searcher.Searcher import Searcher
 
