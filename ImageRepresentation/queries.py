@@ -32,3 +32,11 @@ def create_image_table():
 			);
 	"""
 	return query
+
+
+def get_path_query(image_id):
+	query = """
+				select * from image_search.image 
+				where image_id = '{}'
+		""".format(image_id)
+	return query
