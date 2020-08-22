@@ -4,6 +4,7 @@ from HelperFunctions.MysqlConnector import run_query_noop, run_query_op
 from Searcher.SqlQueries import get_features
 from DistanceMeasures.DistanceMeasures import DistanceMeasures
 from ImageRepresentation.SimilarImage import SimilarImage
+from HelperFunctions.HelperFunctions import deserialize_features
 
 
 class Searcher:
@@ -11,16 +12,12 @@ class Searcher:
 		self.mysql_connector = mysql_connector
 		return
 
-	@staticmethod
-	def deserialize_features(feature_list, dtype = "float32"):
-		return np.asarray(feature_list.split(","), dtype = dtype)
-
 	def search(self, query_image_id, limit = 10):
 		indexed_features_data = run_query_op(self.mysql_connector, get_features("image_search.color_descriptor_features"))
-		indexed_features_data['float_features'] = indexed_features_data["features"].apply(self.deserialize_features)
+		indexed_features_data['float_features'] = indexed_features_data["features"].apply(deserialize_features)
 		query_features_data = run_query_op(self.mysql_connector, get_features("image_search.color_descriptor_features",
 																			  image_id = query_image_id))
-		query_features = self.deserialize_features(query_features_data['features'].iloc[0])
+		query_features = deserialize_features(query_features_data['features'].iloc[0])
 
 		indexed_features_data['similarity_score'] = indexed_features_data["float_features"].apply(
 			lambda x: DistanceMeasures.chi2_distance(x, query_features))

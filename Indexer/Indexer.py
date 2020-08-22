@@ -1,8 +1,8 @@
 from FeatureExtraction.ColorSimilarity.colorDescriptor import ColorDescriptor
 from ImageRepresentation.Image import Image
 from FeatureExtraction.SqlQueries import insert_color_descriptor
-from HelperFunctions.MysqlConnector import get_conn, run_query_noop, run_query_op
-import os
+from HelperFunctions.MysqlConnector import run_query_noop
+from HelperFunctions.HelperFunctions import serialize_features
 
 
 class Indexer:
@@ -14,9 +14,9 @@ class Indexer:
 		"""Extracts Color Descriptor Based Features and encodes it as a string."""
 		if not image_object.has_color_descriptor:
 			features = [str(feature) for feature in self.cd.describe(image_object.image)]
-			string_encoded_features = ",".join(features)
-			print(len(string_encoded_features))
-			run_query_noop(self.mysql_connector, insert_color_descriptor(image_object.image_id, string_encoded_features))
+			serialized_features = serialize_features(features)
+			print(len(serialized_features))
+			run_query_noop(self.mysql_connector, insert_color_descriptor(image_object.image_id, serialized_features))
 		else:
 			print("Already has image descriptor. Skipping")
 		return True

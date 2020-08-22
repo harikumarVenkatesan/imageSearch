@@ -5,3 +5,9 @@ venv/
 *.pyc
 *.png
 .DS_Store
+*.jpeg
+*.jpg
+*.pickle
+*.prototxt
+*.caffemodel
+*.t7

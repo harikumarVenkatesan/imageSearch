@@ -18,8 +18,9 @@ class Image(object):
             self.path, self.image_format = self.get_path()
         else:
             raise Exception("Need one of path or image_id to be populated")
-        self.image = cv2.imread(self.path)
         self.has_color_descriptor = self.has_color_descriptor_feature_extracted()
+        self.image = cv2.imread(self.path)
+        (self.h, self.w) = self.image.shape[:2]
 
     def has_color_descriptor_feature_extracted(self):
         count = run_query_op(self.mysql_connector,
