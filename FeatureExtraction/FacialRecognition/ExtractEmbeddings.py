@@ -69,7 +69,6 @@ class ExtractEmbeddings:
 			if facial_boundary:
 				face = image[facial_boundary[0][0]:facial_boundary[0][1], facial_boundary[1][0]:facial_boundary[1][1]]
 				if self.is_face_large_enough(face):
-					# bw_face = cv2.threshold(face, 128, 255, cv2.THRESH_BINARY)[1]
 					cv2.imwrite("op/sample_faces/{}_{}.png".format(tag, self.counter), face)
 					face_blob = cv2.dnn.blobFromImage(face, 1.0 / 255,
 													  (96, 96), (0, 0, 0), swapRB = True, crop = False)
